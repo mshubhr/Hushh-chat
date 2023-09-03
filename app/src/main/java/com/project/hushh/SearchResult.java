@@ -1,25 +1,27 @@
 package com.project.hushh;
+import com.google.gson.annotations.SerializedName;
 
 public class SearchResult {
+
+    @SerializedName("result_title")
     private String title;
+
+    @SerializedName("result_link")
     private String link;
 
-    // Getter for 'title' field
+    // Getters and setters for title and link
     public String getTitle() {
         return title;
     }
 
-    // Setter for 'title' field
     public void setTitle(String title) {
         this.title = title;
     }
 
-    // Getter for 'link' field
     public String getLink() {
         return link;
     }
 
-    // Setter for 'link' field
     public void setLink(String link) {
         this.link = link;
     }

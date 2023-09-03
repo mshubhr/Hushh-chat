@@ -12,9 +12,10 @@ public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdap
 
     private List<SearchResult> searchResults;
 
+    // Constructor to set the search results
     public void setSearchResults(List<SearchResult> results) {
-        searchResults = results;
-        notifyDataSetChanged(); // Notify the adapter that the data has changed
+        this.searchResults = results;
+        notifyDataSetChanged();
     }
 
     @NonNull
@@ -36,11 +37,11 @@ public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdap
         return searchResults != null ? searchResults.size() : 0;
     }
 
-    static class SearchResultViewHolder extends RecyclerView.ViewHolder {
+    public static class SearchResultViewHolder extends RecyclerView.ViewHolder {
         TextView titleTextView;
         TextView linkTextView;
 
-        SearchResultViewHolder(@NonNull View itemView) {
+        public SearchResultViewHolder(@NonNull View itemView) {
             super(itemView);
             titleTextView = itemView.findViewById(R.id.titleTextView);
             linkTextView = itemView.findViewById(R.id.linkTextView);

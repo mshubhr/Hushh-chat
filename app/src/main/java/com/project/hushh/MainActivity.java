@@ -1,27 +1,28 @@
 package com.project.hushh;
 
 import android.os.Bundle;
-import android.view.View;
-import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
-//import retrofit2.converter.gson.GsonConverterFactory;
-
-import java.util.List;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity {
 
     private EditText searchEditText;
-    private Button searchButton;
-    private WebView webView;
+    private SearchResultsAdapter adapter;
+    private SearchService searchService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,48 +30,49 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         searchEditText = findViewById(R.id.searchEditText);
-        searchButton = findViewById(R.id.searchButton);
-//        webView = findViewById(R.id.webView);
+        Button searchButton = findViewById(R.id.searchButton);
+        RecyclerView recyclerView = findViewById(R.id.recyclerView);
 
-        searchButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String query = searchEditText.getText().toString();
-                if (!query.isEmpty()) {
-                    // Initialize Retrofit
-                    Retrofit retrofit = new Retrofit.Builder()
-                            .baseUrl("https://www.googleapis.com")
-//                            .addConverterFactory(GsonConverterFactory.create())
-                            .build();
+        // Define the base URL of your API
+        String baseUrl = "https://www.googleapis.com/"; // Replace with your APIs base URL
 
-                    // Create a Retrofit service instance
-                    GoogleCustomSearchService searchService = retrofit.create(GoogleCustomSearchService.class);
+// Create a Retrofit instance
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(baseUrl)
+                .addConverterFactory(GsonConverterFactory.create()) // Use Gson for JSON parsing
+                .build();
 
-                    // Make the search request
-                    Call<SearchResponse> call = searchService.search(query, "https://cse.google.com/cse?cx=a4d09d5e6548f4c34");
+        searchService = retrofit.create(SearchService.class);
 
-                    // Execute the request asynchronously
-                    call.enqueue(new Callback<SearchResponse>() {
-                        @Override
-                        public void onResponse(Call<SearchResponse> call, Response<SearchResponse> response) {
-                            if (response.isSuccessful()) {
-                                // Handle the successful response here
-                                SearchResponse searchResponse = response.body();
-                                List<SearchResult> results = searchResponse.getItems();
+        // Initialize the RecyclerView and adapter
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        adapter = new SearchResultsAdapter();
+        recyclerView.setAdapter(adapter);
 
-                                // Process the search results as needed
-                                // For example, you can display them in a RecyclerView
-                            } else {
-                                // Handle the error response here
-                            }
+        searchButton.setOnClickListener(v -> {
+            String query = searchEditText.getText().toString();
+            if (!query.isEmpty()) {
+                // Call the search method in your SearchService
+                Call<SearchResponse> call = searchService.search(query, "https://cse.google.com/cse?cx=a4d09d5e6548f4c34");
+                call.enqueue(new Callback<SearchResponse>() {
+                    @Override
+                    public void onResponse(@NonNull Call<SearchResponse> call, @NonNull Response<SearchResponse> response) {
+                        if (response.isSuccessful()) {
+                            assert response.body() != null;
+                            List<SearchResult> results = response.body().getItems();
+                            adapter.setSearchResults(results);
+                        } else {
+                            Toast.makeText(MainActivity.this, "Search failed", Toast.LENGTH_SHORT).show();
                         }
+                    }
 
-                        @Override
-                        public void onFailure(Call<SearchResponse> call, Throwable t) {
-                            // Handle the network request failure here
-                        }
-                    });
-                }
+                    @Override
+                    public void onFailure(@NonNull Call<SearchResponse> call, @NonNull Throwable t) {
+                        Toast.makeText(MainActivity.this, "Network error", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            } else {
+                Toast.makeText(MainActivity.this, "Please enter a search query", Toast.LENGTH_SHORT).show();
             }
         });
     }
