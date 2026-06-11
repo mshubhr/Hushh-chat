@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">hushh</string>
+    <string name="enter_your_search_query">Enter your search query</string>
+    <string name="search">Search</string>
 </resources>

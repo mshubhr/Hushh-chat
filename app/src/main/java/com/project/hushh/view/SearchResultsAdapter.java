@@ -1,18 +1,22 @@
-package com.project.hushh;
+package com.project.hushh.view;
 
+import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.project.hushh.databinding.SearchResultItemBinding;
+import com.project.hushh.model.SearchResult;
+
 import java.util.List;
 
 public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdapter.SearchResultViewHolder> {
 
     private List<SearchResult> searchResults;
 
-    // Constructor to set the search results
+    @SuppressLint("NotifyDataSetChanged")
     public void setSearchResults(List<SearchResult> results) {
         this.searchResults = results;
         notifyDataSetChanged();
@@ -21,15 +25,13 @@ public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdap
     @NonNull
     @Override
     public SearchResultViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.search_result_item, parent, false);
-        return new SearchResultViewHolder(view);
+        return new SearchResultViewHolder(SearchResultItemBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false));
     }
 
     @Override
     public void onBindViewHolder(@NonNull SearchResultViewHolder holder, int position) {
-        SearchResult result = searchResults.get(position);
-        holder.titleTextView.setText(result.getTitle());
-        holder.linkTextView.setText(result.getLink());
+        holder.binding.titleTextView.setText(searchResults.get(position).getTitle());
+        holder.binding.linkTextView.setText(searchResults.get(position).getLink());
     }
 
     @Override
@@ -38,13 +40,11 @@ public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdap
     }
 
     public static class SearchResultViewHolder extends RecyclerView.ViewHolder {
-        TextView titleTextView;
-        TextView linkTextView;
+        private final SearchResultItemBinding binding;
 
-        public SearchResultViewHolder(@NonNull View itemView) {
-            super(itemView);
-            titleTextView = itemView.findViewById(R.id.titleTextView);
-            linkTextView = itemView.findViewById(R.id.linkTextView);
+        public SearchResultViewHolder(@NonNull SearchResultItemBinding binding) {
+            super(binding.getRoot());
+            this.binding = binding;
         }
     }
 }

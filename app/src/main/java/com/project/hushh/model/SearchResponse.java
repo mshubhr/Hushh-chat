@@ -1,6 +1,7 @@
-package com.project.hushh;
+package com.project.hushh.model;
 
 import com.google.gson.annotations.SerializedName;
+
 import java.util.List;
 
 public class SearchResponse {
@@ -12,10 +13,10 @@ public class SearchResponse {
         this.items = items;
     }
 
-    // Getter and setter for items
     public List<SearchResult> getItems() {
         return items;
     }
+
     public void setItems(List<SearchResult> items) {
         this.items = items;
     }

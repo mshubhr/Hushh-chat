@@ -1,36 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".view.MainActivity">
 
-    <!-- Search Query EditText -->
-    <EditText
+    <androidx.appcompat.widget.AppCompatEditText
         android:id="@+id/searchEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_margin="16dp"
-        android:hint="Enter your search query"
+        android:hint="@string/enter_your_search_query"
         android:imeOptions="actionSearch"
         android:inputType="text"
         android:minHeight="48dp"
         android:padding="8dp" />
 
-    <!-- Search Button -->
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/searchButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Search"
         android:layout_below="@+id/searchEditText"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="8dp" />
+        android:layout_marginTop="8dp"
+        android:text="@string/search" />
 
-    <!-- RecyclerView for Search Results -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"

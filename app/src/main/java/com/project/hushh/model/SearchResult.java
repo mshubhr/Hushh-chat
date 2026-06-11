@@ -1,4 +1,5 @@
-package com.project.hushh;
+package com.project.hushh.model;
+
 import com.google.gson.annotations.SerializedName;
 
 public class SearchResult {
@@ -9,7 +10,6 @@ public class SearchResult {
     @SerializedName("result_link")
     private String link;
 
-    // Getters and setters for title and link
     public String getTitle() {
         return title;
     }

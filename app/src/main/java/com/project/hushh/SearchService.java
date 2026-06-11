@@ -1,5 +1,7 @@
 package com.project.hushh;
 
+import com.project.hushh.model.SearchResponse;
+
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
